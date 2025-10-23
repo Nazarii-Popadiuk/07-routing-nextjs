@@ -20,7 +20,7 @@ const TagsMenu = ({ tags }: Props) => {
     <ul className={styles.menuList}>
         <li className={styles.menuItem}>
         <Link href={`/notes/filter`} className={styles.menuLink}>
-          {}
+          All Notes
         </Link>
                 </li>
                 {tags.map(tag => (

@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.css'
 
@@ -10,7 +10,12 @@ export interface NotesModalProps {
 }
 
 export default function NotesModal({ children, onClose }: NotesModalProps) {
+const [isClient, setIsClient] = useState(false);
+
+
+
     useEffect(() => {
+        setIsClient(true);
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 onClose();
@@ -27,7 +32,7 @@ export default function NotesModal({ children, onClose }: NotesModalProps) {
         if (e.target === e.currentTarget)
             onClose();
     }
-
+if (!isClient) return null;
     return createPortal(
         <div
   className={styles.backdrop}
