@@ -2,8 +2,13 @@ import Link from "next/link"
 import styles from "./Header.module.css"
 import TagsMenu from "../TagsMenu/TagsMenu"
 
+type Props = {
+  tags: string[];
+  currentTag?: string;
+  onSelectedTag: (tag: string) => void
+}
 
-const Header = () => {
+const Header = ({tags, onSelectedTag}: Props) => {
   
 return (
   <header className={styles.header}>
@@ -16,7 +21,7 @@ return (
           <Link href="/">Home</Link>
         </li>
         <li>
-          <TagsMenu />
+          <TagsMenu tags={tags} onSelectedTag={onSelectedTag}/>
         </li>
       </ul>
     </nav>
