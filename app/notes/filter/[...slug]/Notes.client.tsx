@@ -1,26 +1,29 @@
 "use client"
 
 import styles from './page.module.css'
-import NoteList from '../../components/NoteList/NoteList'
-import Pagination from '../../components/Pagination/Pagination'
-import SearchBox from '../../components/SearchBox/SearchBox'
-import Modal from '../../components/Modal/Modal'
-import NoteForm from '../../components/NoteForm/NoteForm'
+import NoteList from '../../../../components/NoteList/NoteList'
+import Pagination from '../../../../components/Pagination/Pagination'
+import SearchBox from '../../../../components/SearchBox/SearchBox'
+import Modal from '../../../../components/Modal/Modal'
+import NoteForm from '../../../../components/NoteForm/NoteForm'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
-import { fetchNotes } from '../../lib/api'
+import { fetchNotes } from '../../../../lib/api'
 import { useDebounce } from 'use-debounce'
 import { useEffect, useState } from 'react'
+import TagsMenu from '@/components/TagsMenu/TagsMenu'
 
 type Props = {
   initialSearch: string,
-  initialPage: number
+    initialPage: number,
+  initialTag?: string,
 }
 
-export default function App({ initialSearch, initialPage }: Props) {
+export default function App({ initialSearch, initialPage, initialTag }: Props) {
     const [search, setSearch] = useState(initialSearch);
     const [debouncedSearch] = useDebounce(search, 500);
     const [currentPage, setCurrentPage] = useState(initialPage);
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [currentTag, setCurrentTag] = useState(initialTag)
     const closedModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
 
@@ -34,7 +37,7 @@ export default function App({ initialSearch, initialPage }: Props) {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [debouncedSearch])
+    }, [debouncedSearch, currentTag])
 
 
 
@@ -42,10 +45,13 @@ export default function App({ initialSearch, initialPage }: Props) {
         setCurrentPage(selectedPage);
     }
 
+    const tags = ['Work', 'Personal', 'Meeting', 'Shopping']
+
     return (
 <div className={styles.app}>
     <header className={styles.toolbar}>
                 {<SearchBox onChange={setSearch} />}
+                <TagsMenu tags ={tags} currentTag = {currentTag} onSelectedTag={setCurrentTag} />
         {data && data.totalPages > 1 && (<Pagination pageCount={data.totalPages} currentPage={currentPage} onPageChange={handlePageChange}/>)}
         {<button className={styles.button} onClick={openModal}>Create note +</button>
 }
