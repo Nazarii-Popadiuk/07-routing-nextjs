@@ -3,9 +3,9 @@ import styles from "./Header.module.css"
 import TagsMenu from "../TagsMenu/TagsMenu"
 
 type Props = {
-  tags: string[];
+  tags?: string[];
   currentTag?: string;
-  onSelectedTag: (tag: string) => void
+  onSelectedTag?: (tag: string) => void
 }
 
 const Header = ({tags, onSelectedTag}: Props) => {
@@ -21,7 +21,7 @@ return (
           <Link href="/">Home</Link>
         </li>
         <li>
-          <TagsMenu tags={tags} onSelectedTag={onSelectedTag}/>
+          {tags && onSelectedTag && <TagsMenu tags={tags} onSelectedTag={onSelectedTag} />}
         </li>
       </ul>
     </nav>
