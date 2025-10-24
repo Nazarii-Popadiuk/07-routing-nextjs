@@ -3,13 +3,14 @@ import { fetchNotes } from "@/lib/api";
 import App from "./Notes.client";
 
 type Props = {
-    params:{slug?: string[]}
+    params:Promise<{slug: string[]}>
 }
 
-export default async function Notes({params}: Props) {
+export default async function Notes({ params }: Props) {
+    const Params = await params
     const queryClient = new QueryClient();
 
-    const tag = params.slug ? params.slug[0]: ''
+    const tag = Params.slug ? Params.slug[0]: ''
 
     const search = '';
     const currentPage = 1;

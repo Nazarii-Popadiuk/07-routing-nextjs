@@ -1,20 +1,44 @@
-import { fetchNoteById } from "@/lib/api";
+'use client'
+
+import { useQuery } from "@tanstack/react-query"
+import { fetchNoteById } from "@/lib/api"
+import NotesModal from "@/components/Modal/Modal"
+import styles from './Modal.module.css'
+import { useRouter } from "next/navigation"
 
 
 type Props = {
-  params: Promise<{id: string}>
+    noteId: string;
+  onClose?: () => void;
 }
 
-const NotePreview = async ({ params }: Props) => {
-  const { id } = await params;
-  const note = await fetchNoteById(id);
+export default function NotePreviewClient({ noteId, onClose }: Props) {
 
-  return (
-    <>
-      <h2>{note.title}</h2>
-      <p>{note.content}</p>
-    </>
-  )
+  const router = useRouter()
+  
+  const handleClose = () => {
+    if (onClose) {
+    onClose()
+    } else {
+      router.back()
+  }
 }
 
-export default NotePreview;
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['note', noteId],
+        queryFn: () => fetchNoteById(noteId)
+    })
+
+    if (isLoading) return <NotesModal onClose={handleClose}><p>Loading...</p></NotesModal>
+    if (isError || !data) return <NotesModal onClose={handleClose}><p>Error loading note</p></NotesModal>
+    
+    return (
+        <NotesModal onClose={handleClose}>
+            <div className={styles.preview}>
+        <h2>{data.title}</h2>
+        <p>{data.content}</p>
+      </div>
+    </NotesModal>
+    )
+
+}

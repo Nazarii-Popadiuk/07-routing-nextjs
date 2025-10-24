@@ -10,34 +10,36 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { fetchNotes } from '../../../../lib/api'
 import { useDebounce } from 'use-debounce'
 import { useEffect, useState } from 'react'
-import TagsMenu from '@/components/TagsMenu/TagsMenu'
 
 type Props = {
   initialSearch: string,
     initialPage: number,
   initialTag?: string,
+  
 }
 
-export default function App({ initialSearch, initialPage, initialTag }: Props) {
+export default function App({ initialSearch, initialPage, initialTag = ''}: Props) {
     const [search, setSearch] = useState(initialSearch);
     const [debouncedSearch] = useDebounce(search, 500);
     const [currentPage, setCurrentPage] = useState(initialPage);
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [currentTag, setCurrentTag] = useState(initialTag)
+   
+
     const closedModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
 
+    const tag = initialTag;
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['notes', debouncedSearch, currentPage - 1],
-        queryFn: () => fetchNotes(debouncedSearch, currentPage),
+        queryKey: ['notes', debouncedSearch, currentPage - 1, tag],
+        queryFn: () => fetchNotes(debouncedSearch, currentPage, tag),
         placeholderData: keepPreviousData,
     
     });
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [debouncedSearch, currentTag])
+    }, [debouncedSearch, tag])
 
 
 
@@ -45,13 +47,11 @@ export default function App({ initialSearch, initialPage, initialTag }: Props) {
         setCurrentPage(selectedPage);
     }
 
-    const tags = ['Work', 'Personal', 'Meeting', 'Shopping']
 
     return (
 <div className={styles.app}>
     <header className={styles.toolbar}>
                 {<SearchBox onChange={setSearch} />}
-                <TagsMenu tags ={tags} currentTag = {currentTag} onSelectedTag={setCurrentTag} />
         {data && data.totalPages > 1 && (<Pagination pageCount={data.totalPages} currentPage={currentPage} onPageChange={handlePageChange}/>)}
         {<button className={styles.button} onClick={openModal}>Create note +</button>
 }

@@ -21,6 +21,9 @@ return (
           <Link href="/">Home</Link>
         </li>
         <li>
+          <Link href="/notes/filter/all">Notes</Link>
+        </li>
+        <li>
           {tags && onSelectedTag && <TagsMenu tags={tags} onSelectedTag={onSelectedTag} />}
         </li>
       </ul>
