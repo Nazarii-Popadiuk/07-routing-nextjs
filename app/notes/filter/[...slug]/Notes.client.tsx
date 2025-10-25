@@ -14,11 +14,11 @@ import { useEffect, useState } from 'react'
 type Props = {
   initialSearch: string,
     initialPage: number,
-  initialTag?: string,
+  tag?: string,
   
 }
 
-export default function App({ initialSearch, initialPage, initialTag = ''}: Props) {
+export default function App({ initialSearch, initialPage, tag = ''}: Props) {
     const [search, setSearch] = useState(initialSearch);
     const [debouncedSearch] = useDebounce(search, 500);
     const [currentPage, setCurrentPage] = useState(initialPage);
@@ -31,15 +31,15 @@ export default function App({ initialSearch, initialPage, initialTag = ''}: Prop
     
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['notes', debouncedSearch, currentPage, initialTag],
-        queryFn: () => fetchNotes(debouncedSearch, currentPage, initialTag),
+        queryKey: ['notes', debouncedSearch, currentPage, tag],
+        queryFn: () => fetchNotes(debouncedSearch, currentPage, tag),
         placeholderData: keepPreviousData,
     
     });
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [debouncedSearch, initialTag])
+    }, [debouncedSearch, tag])
 
 
 
