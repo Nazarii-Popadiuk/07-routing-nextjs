@@ -26,7 +26,8 @@ export default function NotePreviewClient({ noteId, onClose }: Props) {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['note', noteId],
-        queryFn: () => fetchNoteById(noteId)
+      queryFn: () => fetchNoteById(noteId),
+        refetchOnMount: false
     })
 
     if (isLoading) return <NotesModal onClose={handleClose}><p>Loading...</p></NotesModal>
@@ -36,7 +37,9 @@ export default function NotePreviewClient({ noteId, onClose }: Props) {
         <NotesModal onClose={handleClose}>
             <div className={styles.preview}>
         <h2>{data.title}</h2>
-        <p>{data.content}</p>
+          <p>{data.content}</p>
+          {data.tag && <p>Tag:{data.tag}</p>}
+          {data.createdAt && (<p>Created:{" "}{ new Date(data.createdAt).toLocaleString()}</p>)}
       </div>
     </NotesModal>
     )

@@ -28,18 +28,18 @@ export default function App({ initialSearch, initialPage, initialTag = ''}: Prop
     const closedModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
 
-    const tag = initialTag;
+    
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['notes', debouncedSearch, currentPage - 1, tag],
-        queryFn: () => fetchNotes(debouncedSearch, currentPage, tag),
+        queryKey: ['notes', debouncedSearch, currentPage, initialTag],
+        queryFn: () => fetchNotes(debouncedSearch, currentPage, initialTag),
         placeholderData: keepPreviousData,
     
     });
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [debouncedSearch, tag])
+    }, [debouncedSearch, initialTag])
 
 
 
@@ -58,7 +58,7 @@ export default function App({ initialSearch, initialPage, initialTag = ''}: Prop
             </header>
             {isLoading && <p className={styles.loader}>Loading...</p>}
             {isError && <p className={styles.error}>An error has happend...</p>}
-            {data && <NoteList notes={data.notes} />}
+            {data && data.notes && data.notes.length > 0 && <NoteList notes={data.notes} />}
             {isModalOpen && (<Modal onClose={closedModal}>
                 <NoteForm onClose={closedModal} />
                 </Modal>)}
