@@ -23,7 +23,7 @@ export default async function Notes({ params }: Props) {
 
   return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-          <App initialSearch={search} initialPage={currentPage} initialTag={tag} />
+          <App initialSearch={search} initialPage={currentPage} tag={tag} />
           </HydrationBoundary>
   );
 }
