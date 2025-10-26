@@ -2,12 +2,12 @@ import Link from 'next/link'
 import styles from './SidebarNotes.module.css'
 
 const tags = [
-  { value: "all", label: "All notes" },
-  { value: "todo", label: "Todo" },
-  { value: "work", label: "Work" },
-  { value: "personal", label: "Personal" },
-  { value: "meeting", label: "Meeting" },
-  { value: "shopping", label: "Shopping" },
+  { value: "All", label: "All notes" },
+  { value: "Todo", label: "Todo" },
+  { value: "Work", label: "Work" },
+  { value: "Personal", label: "Personal" },
+  { value: "Meeting", label: "Meeting" },
+  { value: "Shopping", label: "Shopping" },
 ];
 
 const SidebarNotes = () => {
