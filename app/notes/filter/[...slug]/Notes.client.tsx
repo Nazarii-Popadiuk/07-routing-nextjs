@@ -18,7 +18,7 @@ type Props = {
   
 }
 
-export default function App({ initialSearch, initialPage, tag = ''}: Props) {
+export default function App({ initialSearch, initialPage, tag}: Props) {
     const [search, setSearch] = useState(initialSearch);
     const [debouncedSearch] = useDebounce(search, 500);
     const [currentPage, setCurrentPage] = useState(initialPage);
@@ -32,7 +32,7 @@ export default function App({ initialSearch, initialPage, tag = ''}: Props) {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['notes', debouncedSearch, currentPage, tag],
-        queryFn: () => fetchNotes(debouncedSearch, currentPage, tag),
+        queryFn: () => fetchNotes(debouncedSearch, currentPage, tag ?? undefined),
         placeholderData: keepPreviousData,
     
     });
