@@ -24,7 +24,7 @@ const tag = Params.slug?.[0] && Params.slug[0] !== "all" ? Params.slug[0] : unde
 
   return (
       <HydrationBoundary state={dehydrate(queryClient)}>
-          <App initialSearch={search} initialPage={currentPage} tag={tag} />
+          <App tag={tag} />
           </HydrationBoundary>
   );
 }

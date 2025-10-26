@@ -12,34 +12,31 @@ import { useDebounce } from 'use-debounce'
 import { useEffect, useState } from 'react'
 
 type Props = {
-  initialSearch: string,
-    initialPage: number,
   tag?: string,
   
 }
 
-export default function App({ initialSearch, initialPage, tag}: Props) {
-    const [search, setSearch] = useState(initialSearch);
+export default function Notes({tag}: Props) {
+    const [search, setSearch] = useState('');
     const [debouncedSearch] = useDebounce(search, 500);
-    const [currentPage, setCurrentPage] = useState(initialPage);
+    const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false)
    
 
     const closedModal = () => setIsModalOpen(false);
     const openModal = () => setIsModalOpen(true);
 
-    
+        useEffect(() => {
+        setCurrentPage(1);
+    }, [search, tag])
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['notes', debouncedSearch, currentPage, tag],
-        queryFn: () => fetchNotes(debouncedSearch, currentPage, tag ?? undefined),
+        queryFn: () => fetchNotes(debouncedSearch, currentPage, tag),
         placeholderData: keepPreviousData,
     
     });
 
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [debouncedSearch, tag])
 
 
 
@@ -58,7 +55,7 @@ export default function App({ initialSearch, initialPage, tag}: Props) {
             </header>
             {isLoading && <p className={styles.loader}>Loading...</p>}
             {isError && <p className={styles.error}>An error has happend...</p>}
-            {data && data.notes && data.notes.length > 0 && <NoteList notes={data.notes} />}
+            {data && data.notes && data.notes.length > 0 ? (<NoteList notes={data.notes} />) : (!isLoading && <p className={styles.noNotes}>No notes found</p>)}
             {isModalOpen && (<Modal onClose={closedModal}>
                 <NoteForm onClose={closedModal} />
                 </Modal>)}

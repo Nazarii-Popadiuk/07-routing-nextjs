@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styles from './SidebarNotes.module.css'
 
 const tags = [
-  { value: "All", label: "All notes" },
+
   { value: "Todo", label: "Todo" },
   { value: "Work", label: "Work" },
   { value: "Personal", label: "Personal" },
@@ -12,14 +12,17 @@ const tags = [
 
 const SidebarNotes = () => {
     return (
-  <ul className={styles.menuList}>
-    {tags.map((tag) => (
-      <li key={tag.value}  className={styles.menuItem}>
-        <Link href={`/notes/filter/${tag.value}`} className={styles.menuLink}>
-          {tag.label}
+ <ul className={styles.menuList}>
+        <li className={styles.menuItem}>
+        <Link href={`/notes/filter/all`} className={styles.menuLink}>
+          All Notes
         </Link>
-      </li>
-      ))}
+                </li>
+                {tags.map(tag => (
+                    <li key={tag.value} className={styles.menuItem}>
+                    <Link href={`/notes/filter/${tag.value}`} className={styles.menuLink}>{tag.label}</Link>
+                    </li>
+                ))}
     </ul>
 
     )
