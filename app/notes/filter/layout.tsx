@@ -1,15 +1,15 @@
-type Props = {
+import styles from "./layout.module.css"
+
+type LayoutNotesProps = {
   children: React.ReactNode;
   sidebar: React.ReactNode;
 };
 
-const NotesLayout = ({ children, sidebar }: Props) => {
+export default function LayoutNotes({ children, sidebar }: LayoutNotesProps) {
   return (
-    <section>
-      <aside>{sidebar}</aside>
-      <div>{children}</div>
+    <section className={styles.container}>
+      <aside className={styles.sidebar}>{sidebar}</aside>
+      <div className={styles.notesWrapper}>{children}</div>
     </section>
   );
-};
-
-export default NotesLayout;
+}

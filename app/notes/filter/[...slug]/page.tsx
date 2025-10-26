@@ -10,7 +10,7 @@ export default async function Notes({ params }: Props) {
     const Params = await params
     const queryClient = new QueryClient();
 
-    const tag = Params.slug ? Params.slug[0]: ''
+    const tag = Params.slug[0] !== "all" ? Params.slug[0] : undefined;
 
     const search = '';
     const currentPage = 1;
